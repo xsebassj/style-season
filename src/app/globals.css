@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colores de la marca */
+  --color-brand-navy: #001F54;
+  --color-brand-white: #FFFFFF;
+  --color-brand-gray: #F5F5F5;
+
+  /* Tipografías */
+  --font-serif: var(--font-playfair), serif;
+  --font-sans: var(--font-inter), sans-serif;
+
+  /* Espaciado de letras (tracking) */
+  --tracking-widest: .25em;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-gray text-brand-navy antialiased;
+  }
+}
+
+/* Scrollbar minimalista para mantener la elegancia */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F5F5;
+}
+::-webkit-scrollbar-thumb {
+  background: #001F54;
+}
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
