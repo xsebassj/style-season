@@ -6,17 +6,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "generate:types": "node --loader ts-node/esm node_modules/payload/dist/bin/index.js generate:types",
+    "generate:importmap": "node --loader ts-node/esm node_modules/payload/dist/bin/index.js generate:importmap"
   },
   "dependencies": {
     "@mercadopago/sdk-react": "^1.0.7",
+    "@payloadcms/db-postgres": "^3.85.1",
+    "@payloadcms/next": "^3.85.1",
+    "@payloadcms/richtext-lexical": "^3.85.1",
+    "@payloadcms/storage-s3": "^3.85.1",
+    "@payloadcms/ui": "^3.85.1",
     "@supabase/supabase-js": "^2.107.0",
     "framer-motion": "^12.40.0",
+    "graphql": "^16.14.2",
     "lucide-react": "^1.17.0",
     "mercadopago": "^3.1.0",
     "next": "16.2.7",
+    "payload": "^3.85.1",
     "react": "19.2.4",
-    "react-dom": "19.2.4"
+    "react-dom": "19.2.4",
+    "sharp": "^0.35.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
