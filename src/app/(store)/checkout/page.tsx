@@ -6,7 +6,7 @@ import { CheckCircle2, Circle, Truck, CreditCard, AlertCircle, MapPin, ChevronDo
 import Link from "next/link";
 
 export default function CheckoutPage() {
-  const { cart, closeCart } = useCart();
+  const { cart} = useCart();
   const router = useRouter();
   
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -129,7 +129,7 @@ export default function CheckoutPage() {
       
       texto += `\n🛍️ *Productos:*\n`;
       cart.forEach(item => {
-        texto += `- ${item.quantity}x ${item.name} (Talle: ${item.size}) - $${(item.price * item.quantity).toLocaleString('es-AR')}\n`;
+        texto += `- ${item.quantity}x ${item.title} (Talle: ${item.size}) - $${(item.price * item.quantity).toLocaleString('es-AR')}\n`;
       });
       
       texto += `\n💵 *Subtotal:* $${subtotal.toLocaleString('es-AR')}\n`;
@@ -152,20 +152,25 @@ export default function CheckoutPage() {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
-            items: cart, 
+            cart: cart, // <--- ESTE ES EL CAMBIO CLAVE (Antes decía 'items: cart')
             shippingCost: shippingCost, 
             shippingName: shippingOptions.find(o => o.id === selectedShippingId)?.name 
           })
         });
         
         const data = await response.json();
+        
+        // Atrapamos url o init_point dependiendo de cómo lo devuelva tu API
         if (data.url) {
-          window.location.href = data.url; // Redirige a Mercado Pago
+          window.location.href = data.url; 
+        } else if (data.init_point) {
+          window.location.href = data.init_point; 
         } else {
-          alert("Error al conectar con Mercado Pago.");
+          console.error("Respuesta del servidor:", data);
+          alert("Error al conectar con Mercado Pago. Revisa la consola.");
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error al hacer el fetch:", error);
         alert("Hubo un error al iniciar el pago.");
       } finally {
         setIsProcessing(false);
@@ -335,8 +340,9 @@ export default function CheckoutPage() {
               {cart.map((item, idx) => (
                 <div key={idx} className="flex justify-between items-center text-sm gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-16 bg-gray-50 overflow-hidden shrink-0 rounded border"><img src={item.image_url} className="w-full h-full object-cover" /></div>
-                    <p className="text-sm">{item.name} ({item.size}) <span className="text-gray-400">× {item.quantity}</span></p>
+                    <div className="w-14 h-16 bg-gray-50 overflow-hidden shrink-0 rounded border"><img src={item.image
+                    } className="w-full h-full object-cover" /></div>
+                    <p className="text-sm">{item.title} ({item.size}) <span className="text-gray-400">× {item.quantity}</span></p>
                   </div>
                   <p className="text-sm whitespace-nowrap">${(item.price * item.quantity).toLocaleString('es-AR')}</p>
                 </div>

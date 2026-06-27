@@ -10,7 +10,9 @@ export default function Navbar() {
   const pathname = usePathname(); 
   const [scrolled, setScrolled] = useState(false);
   const [userRoute, setUserRoute] = useState("/login"); 
-  const { openCart, cart } = useCart();
+  
+  // CORRECCIÓN 1: Se eliminó openCart del destructuring
+  const { cart } = useCart();
   
   const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
 
@@ -47,7 +49,7 @@ export default function Navbar() {
     <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled ? "bg-brand-white/95 backdrop-blur-md shadow-sm py-3" : "bg-transparent py-5"}`}>
       <div className="container mx-auto px-6 flex justify-between items-center">
         
-        {/* LOGO DE LA MARCA (Reemplazó a las letras "SS") */}
+        {/* LOGO DE LA MARCA */}
         <Link href="/" className="flex items-center">
           <img 
             src="/logo.jpg" 
@@ -71,14 +73,15 @@ export default function Navbar() {
             <User size={20} strokeWidth={1.5} />
           </Link>
           
-          <button onClick={openCart} aria-label="Carrito" className="hover:opacity-60 transition-opacity relative">
+          {/* CORRECCIÓN 2: Reemplazamos el button por un Link que dirige a /carrito */}
+          <Link href="/carrito" aria-label="Carrito" className="hover:opacity-60 transition-opacity relative">
             <ShoppingCart size={20} strokeWidth={1.5} />
             {totalItems > 0 && (
               <span className="absolute -top-2 -right-2 bg-brand-navy text-brand-white text-[9px] w-4 h-4 flex items-center justify-center rounded-full">
                 {totalItems}
               </span>
             )}
-          </button>
+          </Link>
         </div>
       </div>
     </header>
